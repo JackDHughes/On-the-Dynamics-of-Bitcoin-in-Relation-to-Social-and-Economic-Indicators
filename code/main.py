@@ -33,7 +33,7 @@ def gradient(theta, x, y, alpha):
 theta = gradient(theta, x, y, 0.01)
 plt.plot(x[:,1], y, "o")
 plt.plot(x[:,1], predictY(theta, x).T)
-plt.title("Thetas: " + str(theta) + ", \ncost = " + str(cost(theta, x, y)))
+plt.title("Thetas: " + str(theta) + ", \nCost = " + str(cost(theta, x, y)))
 plt.show()
 
 
