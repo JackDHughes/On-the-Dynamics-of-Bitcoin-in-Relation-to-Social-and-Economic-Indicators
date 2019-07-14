@@ -1,4 +1,4 @@
 # SERATrack1FinalProject
 Jack, Justin, Alex, William Research Project
 
-Welcom!
+Welcome!
