@@ -20,6 +20,12 @@ for i in range(len(google)):
   values.append([google.iloc[i,0], google.iloc[i,1]])
 
 filtered = pd.DataFrame(repeateValues(values, 7))
+
+for week in range(len(filtered)):
+  for day in range(7):
+    filtered[0].
+
+
 print(filtered.head())
 print(datetime.strptime(filtered[0].values[0], '%Y-%m-%d') - timedelta(days=1))
 #.to_csv("data/filtered/google.csv")
