@@ -23,4 +23,4 @@ for date in bitcoin:
     removeDates.append(date)
   if date not in yen and date not in removeDates:
     removeDates.append(date)
-print(len(removeDates))
+print(removeDates)
