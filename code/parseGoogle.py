@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import datetime as dt
 
 google = pd.read_csv("data/unfiltered/gTrends.csv", header=None, names=["week", "popularity"]).drop([0,1], axis=0)
 
@@ -13,7 +14,7 @@ def repeateValues(arr, times):
     for i in range(times):
       output.append(val)
   return output
-
+#datetime.strptime(war_start, '%Y-%m-%d')
 
 for i in range(len(google)):
   values.append([google.iloc[i,0], google.iloc[i,1]])
@@ -22,4 +23,3 @@ filtered = pd.DataFrame(repeateValues(values, 7))
 print(filtered.head())
 #.to_csv("data/filtered/google.csv")
 
-print(google.head())
