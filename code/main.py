@@ -3,8 +3,13 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-google = pd.read_csv("data/google.csv")
+google = pd.read_csv("data/filtered/google.csv")
+bitcoin = pd.read_csv("data/filtered/bitcoin.csv")
 print(np.matrix(google))
+
+#plt.plot(google.iloc[:,0], google.iloc[:,2])
+plt.plot(bitcoin.iloc[:,0], bitcoin.iloc[:,2])
+plt.show()
 
 
 x = np.matrix([[1, 1, 4, 9], [1, 2, 2, 4], [1, 3, 9, 4], [1, 2.5, 3, 9]])

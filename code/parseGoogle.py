@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 
-google = pd.read_csv("data/unfiltered/google.csv", header=None, names=["week", "popularity"]).drop([0,1], axis=0)
+google = pd.read_csv("data/unfiltered/gTrends.csv", header=None, names=["week", "popularity"]).drop([0,1], axis=0)
 
 #for datapoint in google.iterrows():
 
@@ -18,6 +18,8 @@ def repeateValues(arr, times):
 for i in range(len(google)):
   values.append([google.iloc[i,0], google.iloc[i,1]])
 
-pd.DataFrame(repeateValues(values, 7)).to_csv("data/filtered/google.csv")
+filtered = pd.DataFrame(repeateValues(values, 7))
+print(filtered.head())
+#.to_csv("data/filtered/google.csv")
 
 print(google.head())
