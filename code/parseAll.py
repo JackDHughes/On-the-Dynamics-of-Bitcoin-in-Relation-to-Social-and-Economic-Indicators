@@ -23,4 +23,44 @@ for date in bitcoin:
     removeDates.append(date)
   if date not in yen and date not in removeDates:
     removeDates.append(date)
-print(len(removeDates))
+
+
+
+for date in removeDates:
+  if date in bitcoin:
+    bitcoin.pop(date)
+  if date in gTrends:
+    gTrends.pop(date)
+  if date in twitter:
+    twitter.pop(date)
+  if date in euros:
+    euros.pop(date)
+  if date in sp500:
+    sp500.pop(date)
+  if date in yen:
+    yen.pop(date)
+
+
+finaldata = []
+gTrends = list(gTrends.values())
+twitter = list(twitter.values())
+euros = list(euros.values())
+yen = list(yen.values())
+sp500 = list(sp500.values())
+
+
+for i in range(len(bitcoin)):
+  finaldata.append([gTrends[i], twitter[i], euros[i], yen[i], sp500[i]])
+
+print(len(twitter))
+print((len(gTrends)))
+print(len(euros))
+print(len(sp500))
+print(len(yen))
+print(len(bitcoin))
+# pd.DataFrame(twitter).to_csv("data/filtered/finalCombined/twitter.csv")
+pd.DataFrame(finaldata).to_csv("data/filtered/finalCombined/trainingData.csv")
+
+pd.DataFrame(bitcoin.values()).to_csv("data/filtered/finalCombined/bitcoin.csv")
+print(len(bitcoin))
+print(len(finaldata))

@@ -1,20 +1,15 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
+import time
 
+x = pd.read_csv("data/filtered/finalCombined/trainingData.csv", header=None, names=["gTrends", "twitter", "euros", "yen", "sp500"]).iloc[0:-1, :].values
+y = pd.read_csv("data/filtered/finalCombined/bitcoin.csv").iloc[0:-1,:].values
+x = (x - x.mean()) / x.std()
+x = np.hstack((np.ones((len(x), 1)), x))
 
-google = pd.read_csv("data/filtered/google.csv")
-bitcoin = pd.read_csv("data/filtered/bitcoin.csv")
-print(np.matrix(google))
-
-#plt.plot(google.iloc[:,0], google.iloc[:,2])
-plt.plot(bitcoin.iloc[:,0], bitcoin.iloc[:,2])
-plt.show()
-
-
-x = np.matrix([[1, 1, 4, 9], [1, 2, 2, 4], [1, 3, 9, 4], [1, 2.5, 3, 9]])
-y = np.matrix([[3], [4], [1], [2]])
-theta = np.matrix([0, 0, 0, 0])
+theta = np.matrix([0, 0, 0, 0, 0, 0])
+#print(x)
 
 
 def predictY(theta, x):
@@ -23,24 +18,44 @@ def predictY(theta, x):
 def cost(theta, x, y):
   return np.sum(np.square(predictY(theta, x) - y.T))
 
+def scaledCost(theta,x,y):
+  return cost(theta, x, y) / len(y)
+
 def newTheta(theta, x, y, alpha):
   return theta - (alpha/x.shape[0])*sum(predictY(theta, x) - y.T)*x
 
 def gradient(theta, x, y, alpha):
   currentTheta = theta
-  while np.abs(cost(currentTheta, x, y) - cost(newTheta(currentTheta, x, y, alpha), x, y)) > 0.000001:
+  costs = [cost(theta, x, y)]
+  iters = 0
+  while np.abs(cost(currentTheta, x, y) - cost(newTheta(currentTheta, x, y, alpha), x, y)) > 10000:
     currentTheta = newTheta(currentTheta, x, y, alpha)
-  return currentTheta
+    costs.append(cost(currentTheta, x, y))
+    iters+=1
+  return [currentTheta, costs, iters]
 
-theta = gradient(theta, x, y, 0.01)
-plt.plot(x[:,1], y, "o")
-plt.plot(x[:,1], predictY(theta, x).T)
-plt.plot(x[:,2], y, "o")
-plt.plot(x[:,2], predictY(theta, x).T)
-plt.plot(x[:,3], y, "o")
-plt.plot(x[:,3], predictY(theta, x).T)
-plt.title("Thetas: " + str(theta) + ", \nCost = " + str(cost(theta, x, y)))
-#plt.show()
+costInitial = cost(theta,x,y)
+print("Initial Cost: " + str(costInitial))
+
+start = time.time()
+model = gradient(theta, x, y, 0.1)
+theta = model[0]
+end = time.time()
+
+costFinal = cost(theta, x, y)
+print("Ran " + str(model[2]) + " iterations")
+print("Finished training in " + str(end-start) + " seconds")
+print("Final Cost: " + str(costFinal))
+print("Total cost decreased by " + str(100 * (costInitial - costFinal) / costInitial) + "%")
+
+
+plt.plot(y)
+plt.plot(predictY(theta, x).T)
+plt.show()
+
+plt.plot(list(map(lambda x: x/100000000, model[1])))
+plt.show()
+print(theta)
 
 
 #get number of tweets per day
