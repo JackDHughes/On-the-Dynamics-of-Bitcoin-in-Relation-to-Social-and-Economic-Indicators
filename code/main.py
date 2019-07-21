@@ -1,14 +1,14 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-import time
+#import time
 
-x = pd.read_csv("data/filtered/finalCombined/trainingData.csv", header=None, names=["gTrends", "twitter", "euros", "yen", "sp500"]).iloc[0:-1, :].values
-y = pd.read_csv("data/filtered/finalCombined/bitcoin.csv").iloc[0:-1,:].values
+x = pd.read_csv("data/filtered/finalCombined/trainingData.csv", header=None, names=["gTrends", "twitter", "euros", "yen", "sp500"]).iloc[:, :].values
+y = pd.read_csv("data/filtered/finalCombined/bitcoin.csv").iloc[:,1].values
 x = (x - x.mean()) / x.std()
 x = np.hstack((np.ones((len(x), 1)), x))
 
-theta = np.matrix([0, 0, 0, 0, 0, 0])
+theta = np.matrix([0, 0, 0, 0, 0,0])
 #print(x)
 
 
@@ -37,29 +37,29 @@ def gradient(theta, x, y, alpha):
 costInitial = cost(theta,x,y)
 print("Initial Cost: " + str(costInitial))
 
-start = time.time()
-model = gradient(theta, x, y, 0.1)
-theta = model[0]
-end = time.time()
+# start = time.time()
+# model = gradient(theta, x, y, 0.1)
+# theta = model[0]
+# end = time.time()
 
-costFinal = cost(theta, x, y)
-print("Ran " + str(model[2]) + " iterations")
-print("Finished training in " + str(end-start) + " seconds")
-print("Final Cost: " + str(costFinal))
-print("Total cost decreased by " + str(100 * (costInitial - costFinal) / costInitial) + "%")
-
-
-plt.plot(y)
-plt.plot(predictY(theta, x).T)
-plt.show()
-
-plt.plot(list(map(lambda x: x/100000000, model[1])))
-plt.show()
-print(theta)
+# costFinal = cost(theta, x, y)
+# print("Ran " + str(model[2]) + " iterations")
+# print("Finished training in " + str(end-start) + " seconds")
+# print("Final Cost: " + str(costFinal))
+# print("Total cost decreased by " + str(100 * (costInitial - costFinal) / costInitial) + "%")
 
 
-#get number of tweets per day
+# plt.plot(y)
+# plt.plot(predictY(theta, x).T)
+# plt.show()
 
+# plt.plot(model[1])
+# plt.show()
+# print(theta)
+print(x.shape)
+print(y.shape)
+print(theta.shape)
 
+#[[ 4.92853217e+05  1.43360325e+06  6.26848306e+02 -2.08803383e+05 -2.25269992e+05  1.10590662e+05]] for all
 
 

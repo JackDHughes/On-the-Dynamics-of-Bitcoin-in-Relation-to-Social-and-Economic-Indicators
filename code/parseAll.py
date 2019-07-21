@@ -23,6 +23,7 @@ for date in bitcoin:
     removeDates.append(date)
   if date not in yen and date not in removeDates:
     removeDates.append(date)
+<<<<<<< HEAD
 
 
 
@@ -64,3 +65,6 @@ pd.DataFrame(finaldata).to_csv("data/filtered/finalCombined/trainingData.csv")
 pd.DataFrame(bitcoin.values()).to_csv("data/filtered/finalCombined/bitcoin.csv")
 print(len(bitcoin))
 print(len(finaldata))
+=======
+print(removeDates)
+>>>>>>> db38dfd9d5ddc2773d791c10d2c2607eb5973c3d
