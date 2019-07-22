@@ -31,7 +31,7 @@ def predictY(theta, x):
   return theta*x.T
 
 def cost(theta, x, y):
-  return np.sum(np.square(predictY(theta, x) - y.T))
+  return (1/(2*len(y))) * np.sum(np.square(predictY(theta, x) - y.T))
 
 def newTheta(theta, x, y, alpha):
   return theta - (alpha/x.shape[0])*sum(predictY(theta, x) - y.T)*x
@@ -40,7 +40,7 @@ def gradient(theta, x, y, alpha):
   currentTheta = theta
   costs = [cost(theta, x, y)]
   iters = 0
-  while np.abs(cost(currentTheta, x, y) - cost(newTheta(currentTheta, x, y, alpha), x, y)) > 1:
+  while np.abs(cost(currentTheta, x, y) - cost(newTheta(currentTheta, x, y, alpha), x, y)) > 0.001:
     currentTheta = newTheta(currentTheta, x, y, alpha)
     costs.append(cost(currentTheta, x, y))
     iters+=1
@@ -118,3 +118,37 @@ def runModel(theta, trainX, testX, trainY, testY, alpha, label):
 runModel(theta, trainX, testX, trainY, testY, alpha, "ALL")
 runModel(np.matrix([0, 0, 0]), trainX[:,0:3], testX[:,0:3], trainY, testY, alpha, "SOCIAL")
 runModel(np.matrix([0, 0, 0, 0]), np.hstack((np.ones((len(trainX), 1)), trainX[:,3:6])), np.hstack((np.ones((len(testX), 1)), testX[:,3:6])), trainY, testY, alpha, "ECON")
+
+
+socialTest = testX[:,0:3]
+econTest = np.hstack((np.ones((len(testX), 1)), testX[:,3:6]))
+
+econThetas = pd.read_csv("ECONthetas.csv").values[:,1:5]
+socialThetas = pd.read_csv("SOCIALthetas.csv").values[:,1:4]
+allThetas = pd.read_csv("ALLthetas.csv").values[:,1:8]
+
+plt.scatter(np.array(predictY(allThetas, testX)), np.array(testY).T, marker=".")
+plt.title("All Features")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+plt.scatter(np.array(predictY(socialThetas, socialTest)), np.array(testY), marker=".")
+plt.title("Social Features")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+plt.scatter(np.array(predictY(econThetas, econTest)), np.array(testY), marker=".")
+plt.title("Economic Features")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+print("Econ Cost: " + str(cost(econThetas, np.hstack((np.ones((len(testX), 1)), testX[:,3:6])), testY)))
+print("Social Cost: " + str(cost(socialThetas, testX[:,0:3], testY)))
+print("Total Cost: " + str(cost(allThetas, testX, testY)))
+
+print("Econ R2: " + str(r2(econThetas, econTest, testY)))
+print("Social R2: " + str(r2(socialThetas, socialTest, testY)))
+print("Total R2: " + str(r2(allThetas, testX, testY)))
